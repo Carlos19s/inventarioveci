@@ -1,7 +1,7 @@
 import { DashboardMetrics, Product, Category, Sale, GenderType } from '../types';
 
 export const getApiUrl = (): string => {
-  return localStorage.getItem('VECIBAR_API_URL') || import.meta.env.VITE_API_URL || 'http://localhost:5000';
+  return localStorage.getItem('VECIBAR_API_URL') || import.meta.env.VITE_API_URL || 'http://inventarioveci.runasp.net';
 };
 
 export const setApiUrl = (url: string) => {

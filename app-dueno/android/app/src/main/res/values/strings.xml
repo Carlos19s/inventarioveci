@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">VeciBar Dueno</string>
+    <string name="title_activity_main">VeciBar Dueno</string>
+    <string name="package_name">com.vecibar.dueno</string>
+    <string name="custom_url_scheme">com.vecibar.dueno</string>
+</resources>

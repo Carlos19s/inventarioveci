@@ -1,0 +1,9 @@
+{
+  "appId": "com.vecibar.dueno",
+  "appName": "VeciBar Dueno",
+  "webDir": "dist",
+  "server": {
+    "cleartext": true,
+    "androidScheme": "https"
+  }
+}

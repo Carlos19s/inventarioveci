@@ -1,0 +1,9 @@
+{
+  "appId": "com.vecibar.vendedora",
+  "appName": "VeciBar Vendedora",
+  "webDir": "dist",
+  "server": {
+    "cleartext": true,
+    "androidScheme": "https"
+  }
+}
