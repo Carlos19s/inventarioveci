@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { Camera, Image as ImageIcon, Trash2, Loader2, CheckCircle2 } from 'lucide-react';
-import { compressImage, uploadPhoto } from '../services/api';
+import { compressImageToDataUrl } from '../services/api';
 
 interface PhotoCaptureProps {
   imageUrl?: string;
@@ -20,24 +20,21 @@ export const PhotoCapture: React.FC<PhotoCaptureProps> = ({ imageUrl, onImageUpl
 
     try {
       setUploading(true);
-      setCompressionStatus('Optimizando foto para carga ultra-rápida...');
+      setCompressionStatus('Comprimiendo y optimizando foto en alta resolución...');
 
-      // 1. Compress image on device (WebP / max 1200px)
-      const compressed = await compressImage(file, 1200, 0.82);
+      // Compress photo directly on device to high-efficiency WebP/JPEG data URL (under 45KB)
+      const dataUrl = await compressImageToDataUrl(file, 900, 0.78);
       const originalKb = Math.round(file.size / 1024);
-      const compressedKb = Math.round(compressed.size / 1024);
-      setCompressionStatus(`Comprimida: ${originalKb}KB ➔ ${compressedKb}KB (Subiendo a Cloudflare)...`);
+      const optimizedKb = Math.round((dataUrl.length * 3) / 4 / 1024);
 
-      // 2. Upload to Cloudflare R2
-      const url = await uploadPhoto(compressed);
-      onImageUploaded(url);
-      setCompressionStatus(null);
+      onImageUploaded(dataUrl);
+      setCompressionStatus(`Optimizada: ${originalKb}KB ➔ ${optimizedKb}KB`);
+      setTimeout(() => setCompressionStatus(null), 3000);
     } catch (err: any) {
-      alert('Error al subir la imagen: ' + (err.message || 'Error desconocido'));
+      alert('Error al procesar la foto: ' + (err.message || 'Error desconocido'));
       setCompressionStatus(null);
     } finally {
       setUploading(false);
-      // Reset inputs so the same file can be selected again
       if (cameraInputRef.current) cameraInputRef.current.value = '';
       if (galleryInputRef.current) galleryInputRef.current.value = '';
     }
@@ -68,11 +65,10 @@ export const PhotoCapture: React.FC<PhotoCaptureProps> = ({ imageUrl, onImageUpl
             src={imageUrl}
             alt="Prenda"
             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-            loading="lazy"
           />
-          <div style={{ position: 'absolute', bottom: 8, left: 8, background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)', color: 'white', padding: '4px 10px', borderRadius: 20, fontSize: '0.72rem', display: 'flex', alignItems: 'center', gap: 5 }}>
+          <div style={{ position: 'absolute', bottom: 8, left: 8, background: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(4px)', color: 'white', padding: '4px 10px', borderRadius: 20, fontSize: '0.72rem', display: 'flex', alignItems: 'center', gap: 5 }}>
             <CheckCircle2 size={13} color="#4ADE80" />
-            <span>Optimizada en Cloudflare</span>
+            <span>Foto lista</span>
           </div>
           <button
             type="button"
