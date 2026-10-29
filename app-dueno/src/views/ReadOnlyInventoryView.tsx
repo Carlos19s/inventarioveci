@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Search, ShieldAlert, RefreshCw, AlertCircle, Tag } from 'lucide-react';
-import { Product, Category, GenderType } from '../types';
+import type { Product, Category, GenderType } from '../types';
 import { getProducts, getCategories } from '../services/api';
 
 const SIZES = ['Todas', 'RN (0-1M)', '0-3M', '3-6M', '6-9M', '9-12M', '12-18M', '18-24M', '2T', '3T', '4T'];
@@ -101,7 +101,7 @@ export const ReadOnlyInventoryView: React.FC = () => {
         ))}
       </div>
 
-      {/* Gender & Size filter row */}
+      {/* Gender & Size filter row (No Emojis) */}
       <div style={{ display: 'flex', gap: 10 }}>
         <div style={{ flex: 1.4, display: 'flex', background: '#E2E8F0', padding: 3, borderRadius: 12 }}>
           {(['Todos', 'Niño', 'Niña', 'Unisex'] as const).map((g) => (
@@ -120,7 +120,7 @@ export const ReadOnlyInventoryView: React.FC = () => {
                 cursor: 'pointer'
               }}
             >
-              {g === 'Todos' ? 'Todos' : g === 'Niño' ? '👦' : g === 'Niña' ? '👧' : '🍼'}
+              {g}
             </button>
           ))}
         </div>
@@ -177,7 +177,7 @@ export const ReadOnlyInventoryView: React.FC = () => {
                   )}
                 </div>
 
-                {/* Info */}
+                {/* Info (No Emojis) */}
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                     <div>

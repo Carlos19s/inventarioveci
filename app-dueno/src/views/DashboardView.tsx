@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { DollarSign, TrendingUp, ShoppingBag, RefreshCw, AlertCircle, Sparkles, AlertTriangle, Layers } from 'lucide-react';
-import { DashboardMetrics, PeriodSummary } from '../types';
+import { DollarSign, TrendingUp, ShoppingBag, RefreshCw, AlertCircle, Sparkles, AlertTriangle, Layers, Calendar } from 'lucide-react';
+import type { DashboardMetrics, PeriodSummary } from '../types';
 
 interface DashboardViewProps {
   metrics: DashboardMetrics | null;
@@ -47,25 +47,26 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-      {/* Period Selector Tabs */}
+      {/* Period Selector Tabs without emojis */}
       <div className="period-selector">
         <button
           className={`period-btn ${period === 'today' ? 'active' : ''}`}
           onClick={() => setPeriod('today')}
         >
-          <span>📅 Hoy (Diario)</span>
+          <Calendar size={14} />
+          <span>Hoy (Diario)</span>
         </button>
         <button
           className={`period-btn ${period === 'week' ? 'active' : ''}`}
           onClick={() => setPeriod('week')}
         >
-          <span>🗓️ Semana</span>
+          <span>Semana</span>
         </button>
         <button
           className={`period-btn ${period === 'month' ? 'active' : ''}`}
           onClick={() => setPeriod('month')}
         >
-          <span>📊 Mes</span>
+          <span>Mes</span>
         </button>
       </div>
 
@@ -76,7 +77,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         </div>
       )}
 
-      {/* Main KPI: Net Profit (Ganancia Neta) */}
+      {/* Main KPI: Net Profit */}
       <div className="kpi-profit-card">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
           <div>
@@ -107,9 +108,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         </div>
       </div>
 
-      {/* Mini KPIs: Ventas Brutas vs Costo de Compra */}
+      {/* Mini KPIs */}
       <div className="kpi-grid">
-        {/* Total Sales */}
         <div className="kpi-mini-card">
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#3B82F6', marginBottom: 4 }}>
             <DollarSign size={16} />
@@ -123,7 +123,6 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           </span>
         </div>
 
-        {/* Cost of Goods */}
         <div className="kpi-mini-card">
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#64748B', marginBottom: 4 }}>
             <ShoppingBag size={16} />
@@ -138,7 +137,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         </div>
       </div>
 
-      {/* Total Inventory Valuation (Valor de la Tienda) */}
+      {/* Total Inventory Valuation */}
       {metrics?.inventory && (
         <div className="card" style={{ background: 'linear-gradient(135deg, #1E293B, #0F172A)', color: 'white', border: 'none' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>

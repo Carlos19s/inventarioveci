@@ -1,5 +1,5 @@
 import React from 'react';
-import { Product } from '../types';
+import type { Product } from '../types';
 import { Plus, Tag } from 'lucide-react';
 
 interface ProductCardProps {
@@ -69,12 +69,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, 
           </div>
         )}
 
-        {/* Gender Badge */}
+        {/* Gender Badge (No Emojis) */}
         <div style={{ position: 'absolute', top: 6, left: 6 }}>
           <span className={`badge-gender ${getGenderClass(product.gender)}`}>
-            {product.gender === 'Niño' && '👦 '}
-            {product.gender === 'Niña' && '👧 '}
-            {product.gender === 'Unisex' && '🍼 '}
             {product.gender}
           </span>
         </div>
@@ -88,7 +85,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, 
       {/* Product Info */}
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
         <p style={{ fontSize: '0.72rem', color: '#E05D82', fontWeight: 700, textTransform: 'uppercase' }}>
-          {product.categoryName || 'Bebé'}
+          {product.categoryName || 'Prenda'}
         </p>
         <h4
           style={{

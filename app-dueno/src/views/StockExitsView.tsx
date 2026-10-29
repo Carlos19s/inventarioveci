@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { TrendingDown, Tag, ArrowUpRight, Clock, RefreshCw } from 'lucide-react';
-import { DashboardMetrics, StockExitItem } from '../types';
+import { TrendingDown, Tag, RefreshCw, Calendar } from 'lucide-react';
+import type { DashboardMetrics, StockExitItem } from '../types';
 
 interface StockExitsViewProps {
   metrics: DashboardMetrics | null;
@@ -27,7 +27,6 @@ export const StockExitsView: React.FC<StockExitsViewProps> = ({
 
   const totalExitedUnits = exits.reduce((sum, e) => sum + e.quantitySold, 0);
   const totalExitedProfit = exits.reduce((sum, e) => sum + e.totalProfit, 0);
-  const totalExitedRevenue = exits.reduce((sum, e) => sum + e.totalRevenue, 0);
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
@@ -37,19 +36,20 @@ export const StockExitsView: React.FC<StockExitsViewProps> = ({
           className={`period-btn ${period === 'today' ? 'active' : ''}`}
           onClick={() => setPeriod('today')}
         >
-          <span>📅 Hoy (Diario)</span>
+          <Calendar size={14} />
+          <span>Hoy (Diario)</span>
         </button>
         <button
           className={`period-btn ${period === 'week' ? 'active' : ''}`}
           onClick={() => setPeriod('week')}
         >
-          <span>🗓️ Semana</span>
+          <span>Semana</span>
         </button>
         <button
           className={`period-btn ${period === 'month' ? 'active' : ''}`}
           onClick={() => setPeriod('month')}
         >
-          <span>📊 Mes</span>
+          <span>Mes</span>
         </button>
       </div>
 
@@ -108,7 +108,7 @@ export const StockExitsView: React.FC<StockExitsViewProps> = ({
                   )}
                 </div>
 
-                {/* Details */}
+                {/* Details (No Emojis) */}
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                     <span style={{ fontSize: '0.7rem', color: '#E05D82', fontWeight: 700, textTransform: 'uppercase' }}>
@@ -118,7 +118,7 @@ export const StockExitsView: React.FC<StockExitsViewProps> = ({
                       {item.size}
                     </span>
                     <span style={{ fontSize: '0.7rem', color: '#64748B' }}>
-                      {item.gender === 'Niño' ? '👦' : item.gender === 'Niña' ? '👧' : '🍼'}
+                      {item.gender}
                     </span>
                   </div>
 
@@ -126,7 +126,7 @@ export const StockExitsView: React.FC<StockExitsViewProps> = ({
                     {item.productName}
                   </h5>
 
-                  {/* Pricing Comparison: Purchase vs Sale vs Profit */}
+                  {/* Pricing Comparison */}
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, fontSize: '0.75rem', marginTop: 4 }}>
                     <span style={{ color: '#64748B' }}>
                       Compra: <strong>${item.unitPurchasePrice.toFixed(2)}</strong>

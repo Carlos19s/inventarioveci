@@ -4,11 +4,11 @@
   --primary: #E05D82;
   --primary-hover: #D0456C;
   --primary-light: #FDF2F4;
-  --boy-blue: #3B82F6;
+  --boy-blue: #2563EB;
   --boy-light: #EFF6FF;
-  --girl-pink: #EC4899;
+  --girl-pink: #DB2777;
   --girl-light: #FDF2F8;
-  --unisex-mint: #10B981;
+  --unisex-mint: #059669;
   --unisex-light: #ECFDF5;
   --bg-app: #F8FAFC;
   --card-bg: #FFFFFF;
@@ -22,7 +22,7 @@
   --radius-md: 14px;
   --radius-lg: 20px;
   --radius-full: 9999px;
-  --nav-height: 68px;
+  --nav-height: 72px;
 }
 
 * {
@@ -43,7 +43,7 @@ body {
   margin: 0;
 }
 
-/* Mobile Frame Container (gives native app experience on phone & desktop preview) */
+/* Mobile Frame Container */
 #root {
   width: 100%;
   max-width: 480px;
@@ -55,26 +55,19 @@ body {
   box-shadow: 0 0 30px rgba(0,0,0,0.1);
 }
 
-/* Scrollbar customization */
-::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
-}
-::-webkit-scrollbar-thumb {
-  background: #CBD5E1;
-  border-radius: 4px;
-}
-
-/* App Header */
+/* App Header with Dynamic Island & Notch Safe Area */
 .app-header {
   position: sticky;
   top: 0;
   z-index: 40;
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
-  padding: 12px 16px;
+  padding-top: max(16px, env(safe-area-inset-top));
+  padding-bottom: 14px;
+  padding-left: 16px;
+  padding-right: 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -84,15 +77,13 @@ body {
   font-family: 'Outfit', sans-serif;
   font-size: 1.25rem;
   font-weight: 800;
-  background: linear-gradient(135deg, #E05D82, #F43F5E);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #0F172A;
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-/* Bottom Navigation Bar */
+/* Bottom Navigation Bar with Safe Area */
 .bottom-nav {
   position: fixed;
   bottom: 0;
@@ -100,15 +91,18 @@ body {
   transform: translateX(-50%);
   width: 100%;
   max-width: 480px;
-  height: var(--nav-height);
-  background: rgba(255, 255, 255, 0.95);
+  height: calc(var(--nav-height) + env(safe-area-inset-bottom, 0px));
+  background: rgba(255, 255, 255, 0.96);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-top: 1px solid var(--border);
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-around;
-  padding: 6px 8px 10px 8px;
+  padding-top: 8px;
+  padding-bottom: max(8px, env(safe-area-inset-bottom));
+  padding-left: 8px;
+  padding-right: 8px;
   z-index: 50;
   box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.04);
 }
@@ -162,7 +156,7 @@ body {
 .content-area {
   flex: 1;
   padding: 16px;
-  padding-bottom: calc(var(--nav-height) + 24px);
+  padding-bottom: calc(var(--nav-height) + env(safe-area-inset-bottom, 0px) + 20px);
   overflow-y: auto;
 }
 
@@ -288,16 +282,19 @@ body {
 .badge-gender.nino {
   background: var(--boy-light);
   color: var(--boy-blue);
+  border: 1px solid #BFDBFE;
 }
 
 .badge-gender.nina {
   background: var(--girl-light);
   color: var(--girl-pink);
+  border: 1px solid #FBCFE8;
 }
 
 .badge-gender.unisex {
   background: var(--unisex-light);
   color: var(--unisex-mint);
+  border: 1px solid #A7F3D0;
 }
 
 /* Size Chip */
@@ -341,7 +338,6 @@ body {
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  animation: fadeIn 0.2s ease-out;
 }
 
 .modal-sheet {
@@ -351,17 +347,14 @@ body {
   border-radius: 24px 24px 0 0;
   padding: 20px;
   box-shadow: 0 -10px 25px rgba(0,0,0,0.1);
-  animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   max-height: 90vh;
   overflow-y: auto;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+.spin {
+  animation: spin 1s linear infinite;
 }
-
-@keyframes slideUp {
-  from { transform: translateY(100%); }
-  to { transform: translateY(0); }
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }

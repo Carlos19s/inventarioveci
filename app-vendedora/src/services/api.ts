@@ -1,8 +1,12 @@
-import { Category, Product, CreateProductInput, Sale, CreateSaleInput, GenderType } from '../types';
+import type { Category, Product, CreateProductInput, Sale, CreateSaleInput, GenderType } from '../types';
 
-// Default API URL can be overridden in localStorage or env
 export const getApiUrl = (): string => {
-  return localStorage.getItem('VECIBAR_API_URL') || import.meta.env.VITE_API_URL || 'http://inventarioveci.runasp.net';
+  const saved = localStorage.getItem('VECIBAR_API_URL');
+  // Default to MonsterASP cloud API if not set or if pointing to localhost
+  if (!saved || saved.includes('localhost') || saved.includes('127.0.0.1')) {
+    return 'http://inventarioveci.runasp.net';
+  }
+  return saved;
 };
 
 export const setApiUrl = (url: string) => {
@@ -13,7 +17,7 @@ export const setApiUrl = (url: string) => {
  * Optimizes and compresses photos on-device before uploading.
  * Produces clean WebP/JPEG under 150KB for ultra-fast upload over mobile network.
  */
-export async function compressImage(file: File, maxWidth = 1200, quality = 0.8): Promise<File> {
+export async function compressImage(file: File, maxWidth = 1200, quality = 0.82): Promise<File> {
   return new Promise((resolve) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -62,7 +66,7 @@ export async function compressImage(file: File, maxWidth = 1200, quality = 0.8):
   });
 }
 
-// Upload photo to Cloudflare R2 via API
+// Upload photo
 export async function uploadPhoto(file: File): Promise<string> {
   const baseUrl = getApiUrl();
   const formData = new FormData();
@@ -86,7 +90,7 @@ export async function uploadPhoto(file: File): Promise<string> {
 export async function getCategories(): Promise<Category[]> {
   const baseUrl = getApiUrl();
   const res = await fetch(`${baseUrl}/api/categories`);
-  if (!res.ok) throw new Error('Error al cargar categorías');
+  if (!res.ok) throw new Error(`Error ${res.status}: No se pudo cargar categorías desde ${baseUrl}`);
   return res.json();
 }
 
@@ -121,7 +125,7 @@ export async function getProducts(filters?: ProductFilters): Promise<Product[]> 
   if (filters?.size && filters.size !== 'Todas') params.append('size', filters.size);
 
   const res = await fetch(`${baseUrl}/api/products?${params.toString()}`);
-  if (!res.ok) throw new Error('Error al cargar productos');
+  if (!res.ok) throw new Error(`Error ${res.status}: No se pudo cargar inventario desde ${baseUrl}`);
   return res.json();
 }
 
@@ -182,6 +186,6 @@ export async function createSale(data: CreateSaleInput): Promise<any> {
 export async function getSales(): Promise<Sale[]> {
   const baseUrl = getApiUrl();
   const res = await fetch(`${baseUrl}/api/sales?limit=40`);
-  if (!res.ok) throw new Error('Error al cargar ventas');
+  if (!res.ok) throw new Error(`Error ${res.status}: No se pudo cargar ventas desde ${baseUrl}`);
   return res.json();
 }

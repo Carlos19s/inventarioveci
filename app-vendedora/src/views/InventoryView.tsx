@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Sparkles, Filter, RefreshCw, AlertCircle } from 'lucide-react';
-import { Category, Product, GenderType } from '../types';
-import { getCategories, getProducts } from '../services/api';
+import { Search, Sparkles, RefreshCw, AlertCircle, PackageSearch, Settings } from 'lucide-react';
+import type { Category, Product, GenderType } from '../types';
+import { getProducts, getApiUrl } from '../services/api';
 import { ProductCard } from '../components/ProductCard';
 
 interface InventoryViewProps {
@@ -9,6 +9,7 @@ interface InventoryViewProps {
   onRefreshCategories: () => void;
   onOpenNewCategoryModal: () => void;
   onAddToCart: (product: Product) => void;
+  onOpenSettings: () => void;
 }
 
 const SIZES = ['Todas', 'RN (0-1M)', '0-3M', '3-6M', '6-9M', '9-12M', '12-18M', '18-24M', '2T', '3T', '4T'];
@@ -17,7 +18,8 @@ export const InventoryView: React.FC<InventoryViewProps> = ({
   categories,
   onRefreshCategories,
   onOpenNewCategoryModal,
-  onAddToCart
+  onAddToCart,
+  onOpenSettings
 }) => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
@@ -26,6 +28,8 @@ export const InventoryView: React.FC<InventoryViewProps> = ({
   const [selectedGender, setSelectedGender] = useState<GenderType | 'Todos'>('Todos');
   const [selectedSize, setSelectedSize] = useState('Todas');
   const [error, setError] = useState<string | null>(null);
+
+  const currentApi = getApiUrl();
 
   const loadProducts = async () => {
     try {
@@ -39,7 +43,7 @@ export const InventoryView: React.FC<InventoryViewProps> = ({
       });
       setProducts(data);
     } catch (err: any) {
-      setError(err.message || 'Error al conectar con el servidor.');
+      setError(err.message || 'Error de conexión con el servidor.');
     } finally {
       setLoading(false);
     }
@@ -135,7 +139,7 @@ export const InventoryView: React.FC<InventoryViewProps> = ({
         </div>
       </div>
 
-      {/* Gender & Size Filters Row */}
+      {/* Gender & Size Filters Row (Clean, No Emojis) */}
       <div style={{ display: 'flex', gap: 10 }}>
         {/* Gender selector */}
         <div style={{ flex: 1.4, display: 'flex', background: '#E2E8F0', padding: 3, borderRadius: 12 }}>
@@ -156,7 +160,7 @@ export const InventoryView: React.FC<InventoryViewProps> = ({
                 transition: 'all 0.15s ease'
               }}
             >
-              {g === 'Todos' ? 'Todos' : g === 'Niño' ? '👦' : g === 'Niña' ? '👧' : '🍼'}
+              {g}
             </button>
           ))}
         </div>
@@ -176,11 +180,23 @@ export const InventoryView: React.FC<InventoryViewProps> = ({
         </div>
       </div>
 
-      {/* Error notification */}
+      {/* Connection Error Banner with Quick Fix */}
       {error && (
-        <div style={{ background: '#FEF2F2', border: '1px solid #FECACA', padding: '12px 14px', borderRadius: 14, color: '#B91C1C', display: 'flex', alignItems: 'center', gap: 8, fontSize: '0.85rem' }}>
-          <AlertCircle size={18} />
-          <span>{error}</span>
+        <div style={{ background: '#FEF2F2', border: '1px solid #FECACA', padding: '12px 14px', borderRadius: 14, color: '#B91C1C', display: 'flex', flexDirection: 'column', gap: 8, fontSize: '0.82rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <AlertCircle size={18} style={{ flexShrink: 0 }} />
+            <span style={{ fontWeight: 600 }}>{error}</span>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px dashed #FECACA', paddingTop: 6, fontSize: '0.75rem' }}>
+            <span style={{ color: '#64748B' }}>Servidor: <strong>{currentApi}</strong></span>
+            <button
+              onClick={onOpenSettings}
+              style={{ background: '#B91C1C', color: 'white', border: 'none', padding: '4px 8px', borderRadius: 6, cursor: 'pointer', fontWeight: 700, display: 'flex', alignItems: 'center', gap: 4 }}
+            >
+              <Settings size={12} />
+              <span>Ajustar Servidor</span>
+            </button>
+          </div>
         </div>
       )}
 
@@ -191,10 +207,10 @@ export const InventoryView: React.FC<InventoryViewProps> = ({
           <p style={{ fontSize: '0.85rem', fontWeight: 600 }}>Cargando inventario de Turso...</p>
         </div>
       ) : products.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: '48px 16px', background: 'white', borderRadius: 18, border: '1px solid #E2E8F0' }}>
-          <p style={{ fontSize: '1.8rem', marginBottom: 6 }}>👶</p>
-          <h4 style={{ fontWeight: 800, color: '#1E293B', marginBottom: 4 }}>No hay prendas encontradas</h4>
-          <p style={{ fontSize: '0.8rem', color: '#64748B', maxWidth: 260, margin: '0 auto' }}>
+        <div style={{ textAlign: 'center', padding: '48px 16px', background: 'white', borderRadius: 18, border: '1px solid #E2E8F0', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
+          <PackageSearch size={40} color="#94A3B8" />
+          <h4 style={{ fontWeight: 800, color: '#1E293B' }}>No hay prendas encontradas</h4>
+          <p style={{ fontSize: '0.8rem', color: '#64748B', maxWidth: 260 }}>
             Prueba cambiando los filtros o registra nueva mercadería con el botón "+".
           </p>
         </div>

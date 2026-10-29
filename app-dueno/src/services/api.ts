@@ -1,7 +1,11 @@
-import { DashboardMetrics, Product, Category, Sale, GenderType } from '../types';
+import type { DashboardMetrics, Product, Category, Sale, GenderType } from '../types';
 
 export const getApiUrl = (): string => {
-  return localStorage.getItem('VECIBAR_API_URL') || import.meta.env.VITE_API_URL || 'http://inventarioveci.runasp.net';
+  const saved = localStorage.getItem('VECIBAR_API_URL');
+  if (!saved || saved.includes('localhost') || saved.includes('127.0.0.1')) {
+    return 'http://inventarioveci.runasp.net';
+  }
+  return saved;
 };
 
 export const setApiUrl = (url: string) => {
@@ -14,7 +18,7 @@ export async function getDashboardMetrics(): Promise<DashboardMetrics> {
   const res = await fetch(`${baseUrl}/api/dashboard/metrics`);
   if (!res.ok) {
     const err = await res.json().catch(() => ({ message: 'Error al conectar con la API' }));
-    throw new Error(err.message || 'Error al obtener métricas');
+    throw new Error(err.message || `Error ${res.status} al obtener métricas desde ${baseUrl}`);
   }
   return res.json();
 }
@@ -23,7 +27,7 @@ export async function getDashboardMetrics(): Promise<DashboardMetrics> {
 export async function getCategories(): Promise<Category[]> {
   const baseUrl = getApiUrl();
   const res = await fetch(`${baseUrl}/api/categories`);
-  if (!res.ok) throw new Error('Error al cargar categorías');
+  if (!res.ok) throw new Error(`Error ${res.status} al cargar categorías desde ${baseUrl}`);
   return res.json();
 }
 
@@ -44,7 +48,7 @@ export async function getProducts(filters?: ProductFilters): Promise<Product[]> 
   if (filters?.size && filters.size !== 'Todas') params.append('size', filters.size);
 
   const res = await fetch(`${baseUrl}/api/products?${params.toString()}`);
-  if (!res.ok) throw new Error('Error al cargar inventario');
+  if (!res.ok) throw new Error(`Error ${res.status} al cargar inventario desde ${baseUrl}`);
   return res.json();
 }
 
@@ -52,6 +56,6 @@ export async function getProducts(filters?: ProductFilters): Promise<Product[]> 
 export async function getSales(): Promise<Sale[]> {
   const baseUrl = getApiUrl();
   const res = await fetch(`${baseUrl}/api/sales?limit=100`);
-  if (!res.ok) throw new Error('Error al cargar transacciones');
+  if (!res.ok) throw new Error(`Error ${res.status} al cargar transacciones desde ${baseUrl}`);
   return res.json();
 }

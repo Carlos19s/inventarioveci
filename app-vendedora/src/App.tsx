@@ -1,13 +1,15 @@
 import { useState, useEffect } from 'react';
-import { Baby, Settings, Sparkles } from 'lucide-react';
-import { Category, Product } from './types';
+import { Store, Settings } from 'lucide-react';
+import type { Category, Product } from './types';
 import { getCategories } from './services/api';
-import { BottomNav, TabType } from './components/BottomNav';
+import { BottomNav } from './components/BottomNav';
+import type { TabType } from './components/BottomNav';
 import { CategoryModal } from './components/CategoryModal';
 import { SettingsModal } from './components/SettingsModal';
 import { InventoryView } from './views/InventoryView';
 import { RegisterProductView } from './views/RegisterProductView';
-import { QuickSaleView, CartItem } from './views/QuickSaleView';
+import { QuickSaleView } from './views/QuickSaleView';
+import type { CartItem } from './views/QuickSaleView';
 import { SalesHistoryView } from './views/SalesHistoryView';
 
 export function App() {
@@ -72,13 +74,13 @@ export function App() {
 
   return (
     <>
-      {/* Header */}
+      {/* Header with notch padding and zero emojis */}
       <header className="app-header">
         <div className="brand-title">
-          <Baby size={24} color="#E05D82" />
+          <Store size={22} color="#E05D82" />
           <span>VeciBar Bebé</span>
-          <span style={{ fontSize: '0.65rem', background: '#FCE7F3', color: '#DB2777', padding: '2px 8px', borderRadius: 12, fontWeight: 700 }}>
-            Vendedora
+          <span style={{ fontSize: '0.65rem', background: '#FCE7F3', color: '#DB2777', padding: '2px 8px', borderRadius: 12, fontWeight: 700, letterSpacing: '0.5px' }}>
+            VENDEDORA
           </span>
         </div>
 
@@ -99,6 +101,7 @@ export function App() {
             onRefreshCategories={loadCategories}
             onOpenNewCategoryModal={() => setIsCategoryModalOpen(true)}
             onAddToCart={handleAddToCart}
+            onOpenSettings={() => setIsSettingsModalOpen(true)}
           />
         )}
 

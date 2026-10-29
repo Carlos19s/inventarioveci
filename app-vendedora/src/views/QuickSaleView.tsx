@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { ShoppingBag, Plus, Minus, Trash2, CheckCircle2, AlertCircle } from 'lucide-react';
-import { Product } from '../types';
+import { ShoppingBag, Plus, Minus, Trash2, CheckCircle2, AlertCircle, Shirt } from 'lucide-react';
+import type { Product } from '../types';
 import { createSale } from '../services/api';
 
 export interface CartItem {
@@ -26,14 +26,11 @@ export const QuickSaleView: React.FC<QuickSaleViewProps> = ({
   onGoToInventory
 }) => {
   const [paymentMethod, setPaymentMethod] = useState('Efectivo');
-  const [notes, setNotes] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [lastSaleResult, setLastSaleResult] = useState<any>(null);
 
   const totalAmount = cart.reduce((sum, item) => sum + item.product.salePrice * item.quantity, 0);
-  const totalCost = cart.reduce((sum, item) => sum + item.product.purchasePrice * item.quantity, 0);
-  const totalProfit = totalAmount - totalCost;
 
   const handleCheckout = async () => {
     if (cart.length === 0) return;
@@ -44,7 +41,6 @@ export const QuickSaleView: React.FC<QuickSaleViewProps> = ({
 
       const payload = {
         paymentMethod,
-        notes: notes.trim() || undefined,
         items: cart.map(item => ({
           productId: item.product.id,
           quantity: item.quantity
@@ -69,7 +65,7 @@ export const QuickSaleView: React.FC<QuickSaleViewProps> = ({
           <CheckCircle2 size={40} color="#16A34A" />
         </div>
         <div>
-          <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#15803D' }}>¡Venta Completada!</h3>
+          <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#15803D' }}>Venta Completada</h3>
           <p style={{ fontSize: '0.85rem', color: '#64748B', marginTop: 4 }}>
             Stock actualizado automáticamente en Turso.
           </p>
@@ -151,8 +147,8 @@ export const QuickSaleView: React.FC<QuickSaleViewProps> = ({
               {item.product.imageUrl ? (
                 <img src={item.product.imageUrl} alt={item.product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               ) : (
-                <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem' }}>
-                  👶
+                <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#94A3B8' }}>
+                  <Shirt size={22} />
                 </div>
               )}
             </div>

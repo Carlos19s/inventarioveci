@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Sparkles, Plus, CheckCircle2, AlertCircle, Tag, DollarSign, Layers } from 'lucide-react';
-import { Category, GenderType, CreateProductInput } from '../types';
+import { Plus, CheckCircle2, AlertCircle, Shirt } from 'lucide-react';
+import type { Category, GenderType, CreateProductInput } from '../types';
 import { createProduct } from '../services/api';
 import { PhotoCapture } from '../components/PhotoCapture';
 
@@ -33,7 +33,6 @@ export const RegisterProductView: React.FC<RegisterProductViewProps> = ({
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
-  // Sync categoryId if categories load later
   React.useEffect(() => {
     if ((categoryId === 0 || !categories.some(c => c.id === categoryId)) && categories.length > 0) {
       setCategoryId(categories[0].id);
@@ -83,7 +82,6 @@ export const RegisterProductView: React.FC<RegisterProductViewProps> = ({
       setSuccess(true);
       onProductCreated();
 
-      // Reset form fields
       setName('');
       setCode('');
       setPurchasePrice('');
@@ -103,10 +101,11 @@ export const RegisterProductView: React.FC<RegisterProductViewProps> = ({
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-      {/* Header Banner */}
+      {/* Header Banner without emojis */}
       <div style={{ background: 'linear-gradient(135deg, #FFF1F2, #FDF2F8)', padding: 14, borderRadius: 16, border: '1px solid #FFE4E6' }}>
         <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: '#9F1239', display: 'flex', alignItems: 'center', gap: 6 }}>
-          <span>👶 Registro de Ropa de Bebé</span>
+          <Shirt size={18} color="#9F1239" />
+          <span>Registro de Ropa de Bebé</span>
         </h3>
         <p style={{ fontSize: '0.78rem', color: '#881337', marginTop: 2 }}>
           Ingreso de nueva mercadería con foto para Cloudflare y base de datos Turso
@@ -116,7 +115,7 @@ export const RegisterProductView: React.FC<RegisterProductViewProps> = ({
       {success && (
         <div style={{ background: '#ECFDF5', border: '1px solid #A7F3D0', padding: 12, borderRadius: 14, color: '#065F46', display: 'flex', alignItems: 'center', gap: 8, fontSize: '0.88rem', fontWeight: 600 }}>
           <CheckCircle2 size={18} color="#059669" />
-          <span>¡Prenda guardada con éxito en el inventario!</span>
+          <span>Prenda guardada con éxito en el inventario</span>
         </div>
       )}
 
@@ -128,10 +127,10 @@ export const RegisterProductView: React.FC<RegisterProductViewProps> = ({
       )}
 
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-        {/* Photo Capture with Cloudflare R2 Upload */}
+        {/* Photo Capture */}
         <div className="card" style={{ padding: 12 }}>
           <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, marginBottom: 8, color: '#334155' }}>
-            📸 Foto de la prenda (Cámara o Galería)
+            Foto de la prenda (Cámara o Galería)
           </label>
           <PhotoCapture
             imageUrl={imageUrl}
@@ -185,7 +184,7 @@ export const RegisterProductView: React.FC<RegisterProductViewProps> = ({
           </div>
         </div>
 
-        {/* Category Selection with Instant "Crear Nueva Categoría" */}
+        {/* Category Selection */}
         <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <label style={{ fontSize: '0.82rem', fontWeight: 700, color: '#334155' }}>
@@ -223,15 +222,12 @@ export const RegisterProductView: React.FC<RegisterProductViewProps> = ({
               <option key={c.id} value={c.id}>{c.name}</option>
             ))}
           </select>
-          <span style={{ fontSize: '0.72rem', color: '#64748B' }}>
-            💡 Si la mercadería viene en una categoría nueva, pulsa "+ Nueva Categoría" para crearla de inmediato.
-          </span>
         </div>
 
-        {/* Gender Selection */}
+        {/* Gender Selection (No Emojis) */}
         <div className="card">
           <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, marginBottom: 8, color: '#334155' }}>
-            ¿Para quién es la prenda? *
+            Prenda orientada a: *
           </label>
           <div style={{ display: 'flex', gap: 8 }}>
             {(['Niño', 'Niña', 'Unisex'] as const).map((g) => {
@@ -247,7 +243,7 @@ export const RegisterProductView: React.FC<RegisterProductViewProps> = ({
                     borderRadius: 12,
                     border: active ? '2px solid transparent' : '1px solid #E2E8F0',
                     background: active
-                      ? g === 'Niño' ? '#3B82F6' : g === 'Niña' ? '#EC4899' : '#10B981'
+                      ? g === 'Niño' ? '#2563EB' : g === 'Niña' ? '#DB2777' : '#059669'
                       : '#FFFFFF',
                     color: active ? '#FFFFFF' : '#475569',
                     fontWeight: 700,
@@ -261,7 +257,6 @@ export const RegisterProductView: React.FC<RegisterProductViewProps> = ({
                     transition: 'all 0.15s ease'
                   }}
                 >
-                  <span>{g === 'Niño' ? '👦' : g === 'Niña' ? '👧' : '🍼'}</span>
                   <span>{g}</span>
                 </button>
               );
