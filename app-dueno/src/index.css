@@ -13,9 +13,9 @@
   --text-main: #0F172A;
   --text-muted: #64748B;
   --border: #E2E8F0;
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
-  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.05);
-  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -4px rgba(0,0,0,0.04);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
   --radius-sm: 8px;
   --radius-md: 14px;
   --radius-lg: 20px;
@@ -49,7 +49,7 @@ body {
   display: flex;
   flex-direction: column;
   position: relative;
-  box-shadow: 0 0 35px rgba(0,0,0,0.12);
+  box-shadow: 0 0 35px rgba(0, 0, 0, 0.12);
 }
 
 /* App Header with notch safe-area */
@@ -60,7 +60,7 @@ body {
   background: rgba(15, 23, 42, 0.95);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   padding-top: max(16px, env(safe-area-inset-top));
   padding-bottom: 14px;
   padding-left: 16px;
@@ -181,7 +181,7 @@ body {
 .period-btn.active {
   background: #0F172A;
   color: white;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
 /* Financial Highlights */
@@ -228,6 +228,7 @@ body {
   margin-bottom: 12px;
   scrollbar-width: none;
 }
+
 .chips-container::-webkit-scrollbar {
   display: none;
 }
@@ -268,7 +269,7 @@ body {
   max-width: 480px;
   border-radius: 24px 24px 0 0;
   padding: 20px;
-  box-shadow: 0 -10px 25px rgba(0,0,0,0.1);
+  box-shadow: 0 -10px 25px rgba(0, 0, 0, 0.1);
   max-height: 90vh;
   overflow-y: auto;
 }
@@ -283,6 +284,7 @@ body {
   outline: none;
   font-family: inherit;
 }
+
 .input-field:focus {
   border-color: #0F172A;
   background: #FFFFFF;
@@ -328,7 +330,13 @@ body {
 .spin {
   animation: spin 1s linear infinite;
 }
+
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
