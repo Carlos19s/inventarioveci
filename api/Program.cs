@@ -50,6 +50,38 @@ app.UseCors("AllowAll");
 // Serve static files for uploaded photos fallback
 app.UseStaticFiles();
 
+// Direct endpoint to reliably serve uploaded product photos across any hosting structure
+app.MapGet("/uploads/{fileName}", (string fileName, IWebHostEnvironment env) =>
+{
+    var contentRoot = env.ContentRootPath ?? AppContext.BaseDirectory;
+    var candidates = new[]
+    {
+        Path.Combine(contentRoot, "uploads", fileName),
+        Path.Combine(contentRoot, "wwwroot", "uploads", fileName),
+        Path.Combine(AppContext.BaseDirectory, "uploads", fileName),
+        Path.Combine(AppContext.BaseDirectory, "wwwroot", "uploads", fileName),
+        Path.Combine(Directory.GetCurrentDirectory(), "uploads", fileName),
+        Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", fileName)
+    };
+
+    foreach (var path in candidates)
+    {
+        if (File.Exists(path))
+        {
+            var ext = Path.GetExtension(fileName).ToLowerInvariant();
+            var contentType = ext switch
+            {
+                ".webp" => "image/webp",
+                ".png" => "image/png",
+                ".gif" => "image/gif",
+                _ => "image/jpeg"
+            };
+            return Results.File(path, contentType);
+        }
+    }
+    return Results.NotFound();
+});
+
 app.UseAuthorization();
 
 app.MapControllers();

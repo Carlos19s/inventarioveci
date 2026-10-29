@@ -78,17 +78,24 @@ public class CloudflareStorageService
             }
         }
 
-        // Local storage fallback
-        var webRoot = _env.WebRootPath ?? Path.Combine(AppContext.BaseDirectory, "wwwroot");
-        var uploadsDir = Path.Combine(webRoot, "uploads");
-        if (!Directory.Exists(uploadsDir))
+        // Local storage fallback: save to uploads directory
+        var contentRoot = _env.ContentRootPath ?? AppContext.BaseDirectory;
+        var targetDirs = new[]
         {
-            Directory.CreateDirectory(uploadsDir);
-        }
+            Path.Combine(contentRoot, "uploads"),
+            Path.Combine(AppContext.BaseDirectory, "uploads"),
+            Path.Combine(AppContext.BaseDirectory, "wwwroot", "uploads")
+        };
 
-        var filePath = Path.Combine(uploadsDir, uniqueName);
-        using (var fs = new FileStream(filePath, FileMode.Create))
+        foreach (var dir in targetDirs)
         {
+            if (!Directory.Exists(dir))
+            {
+                Directory.CreateDirectory(dir);
+            }
+            var targetPath = Path.Combine(dir, uniqueName);
+            fileStream.Position = 0;
+            using var fs = new FileStream(targetPath, FileMode.Create, FileAccess.Write);
             await fileStream.CopyToAsync(fs);
         }
 
