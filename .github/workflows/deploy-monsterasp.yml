@@ -1,0 +1,43 @@
+name: Build and Deploy API to MonsterASP.NET
+
+on:
+  push:
+    branches: [ "main", "master" ]
+    paths:
+      - 'api/**'
+      - 'VeciBar.sln'
+      - '.github/workflows/deploy-monsterasp.yml'
+
+jobs:
+  build-and-deploy:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore VeciBar.sln
+
+      - name: Build project
+        run: dotnet build VeciBar.sln --configuration Release --no-restore
+
+      - name: Publish API
+        run: dotnet publish api/VeciBar.Api.csproj --configuration Release --output ./publish
+
+      - name: Deploy to MonsterASP.NET via WebDeploy
+        # Este paso se activará si se configuran los secretos en GitHub (Settings > Secrets > Actions)
+        if: env.WEBSITE_NAME != ''
+        uses: rasmusbuchholdt/simply-web-deploy@2.1.0
+        env:
+          WEBSITE_NAME: ${{ secrets.WEBSITE_NAME }}
+        with:
+          website-name: ${{ secrets.WEBSITE_NAME }}
+          server-computer-name: ${{ secrets.SERVER_COMPUTER_NAME }}
+          server-username: ${{ secrets.SERVER_USERNAME }}
+          server-password: ${{ secrets.SERVER_PASSWORD }}
+          source-path: ./publish

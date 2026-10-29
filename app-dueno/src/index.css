@@ -1,0 +1,307 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --primary: #0F172A;
+  --accent-profit: #10B981;
+  --accent-profit-light: #ECFDF5;
+  --accent-cost: #64748B;
+  --accent-sales: #3B82F6;
+  --brand-pink: #E05D82;
+  --gold: #F59E0B;
+  --bg-app: #F8FAFC;
+  --card-bg: #FFFFFF;
+  --text-main: #0F172A;
+  --text-muted: #64748B;
+  --border: #E2E8F0;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.05);
+  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -4px rgba(0,0,0,0.04);
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-full: 9999px;
+  --nav-height: 68px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: #CBD5E1;
+  color: var(--text-main);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  margin: 0;
+}
+
+#root {
+  width: 100%;
+  max-width: 480px;
+  min-height: 100vh;
+  background-color: var(--bg-app);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: 0 0 35px rgba(0,0,0,0.12);
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 4px;
+}
+
+/* App Header */
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: white;
+}
+
+.brand-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Bottom Navigation Bar */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 480px;
+  height: var(--nav-height);
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 6px 8px 10px 8px;
+  z-index: 50;
+  box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 4px 0;
+  gap: 3px;
+  transition: all 0.2s ease;
+}
+
+.nav-item.active {
+  color: #0F172A;
+}
+
+.nav-item.active .nav-icon {
+  transform: translateY(-2px) scale(1.1);
+  color: #10B981;
+}
+
+.nav-icon {
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Content Area */
+.content-area {
+  flex: 1;
+  padding: 16px;
+  padding-bottom: calc(var(--nav-height) + 24px);
+  overflow-y: auto;
+}
+
+/* UI Cards */
+.card {
+  background: var(--card-bg);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  padding: 16px;
+  box-shadow: var(--shadow-sm);
+}
+
+/* Period Selector Pills */
+.period-selector {
+  display: flex;
+  background: #E2E8F0;
+  padding: 3px;
+  border-radius: 14px;
+  gap: 2px;
+}
+
+.period-btn {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: #64748B;
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 8px 4px;
+  border-radius: 11px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.period-btn.active {
+  background: #0F172A;
+  color: white;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+/* Financial Highlights */
+.kpi-profit-card {
+  background: linear-gradient(135deg, #064E3B, #065F46);
+  color: white;
+  border-radius: 18px;
+  padding: 18px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 6px 16px rgba(6, 95, 70, 0.25);
+}
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.kpi-mini-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 12px;
+}
+
+/* Product list items */
+.stock-exit-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: white;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  transition: transform 0.15s ease;
+}
+
+.stock-exit-card:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Chips container */
+.chips-container {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+  margin-bottom: 12px;
+  scrollbar-width: none;
+}
+.chips-container::-webkit-scrollbar {
+  display: none;
+}
+
+.chip {
+  padding: 6px 12px;
+  border-radius: var(--radius-full);
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+  background: #FFFFFF;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.chip.active {
+  background: #0F172A;
+  border-color: #0F172A;
+  color: white;
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.modal-sheet {
+  background: white;
+  width: 100%;
+  max-width: 480px;
+  border-radius: 24px 24px 0 0;
+  padding: 20px;
+  box-shadow: 0 -10px 25px rgba(0,0,0,0.1);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.input-field {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1.5px solid var(--border);
+  font-size: 0.95rem;
+  background: #FAFAFA;
+  outline: none;
+  font-family: inherit;
+}
+.input-field:focus {
+  border-color: #0F172A;
+  background: #FFFFFF;
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
