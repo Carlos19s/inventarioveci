@@ -12,7 +12,7 @@ interface InventoryViewProps {
   onOpenSettings: () => void;
 }
 
-const SIZES = ['Todas', 'RN (0-1M)', '0-3M', '3-6M', '6-9M', '9-12M', '12-18M', '18-24M', '2T', '3T', '4T'];
+const DEFAULT_SIZES = ['Todas', 'S', 'M', 'L', 'XL', '2', '4', '6', '8'];
 
 export const InventoryView: React.FC<InventoryViewProps> = ({
   categories,
@@ -173,7 +173,7 @@ export const InventoryView: React.FC<InventoryViewProps> = ({
             value={selectedSize}
             onChange={(e) => setSelectedSize(e.target.value)}
           >
-            {SIZES.map((s) => (
+            {Array.from(new Set([...DEFAULT_SIZES, ...products.map(p => p.size).filter(Boolean)])).map((s) => (
               <option key={s} value={s}>{s}</option>
             ))}
           </select>

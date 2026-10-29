@@ -49,25 +49,31 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, 
       >
         {product.imageUrl ? (
           <img
-            src={product.imageUrl}
+            src={product.imageUrl.replace(/http:\/\/localhost(:\d+)?/, 'http://inventarioveci.runasp.net')}
             alt={product.name}
             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
             loading="lazy"
-          />
-        ) : (
-          <div
-            style={{
-              width: '100%',
-              height: '100%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: '#94A3B8'
+            onError={(e) => {
+              // Fallback if image fails to load
+              (e.target as HTMLElement).style.display = 'none';
+              const fallback = (e.target as HTMLElement).parentElement?.querySelector('.img-fallback') as HTMLElement;
+              if (fallback) fallback.style.display = 'flex';
             }}
-          >
-            <Tag size={32} />
-          </div>
-        )}
+          />
+        ) : null}
+        <div
+          className="img-fallback"
+          style={{
+            width: '100%',
+            height: '100%',
+            display: product.imageUrl ? 'none' : 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: '#94A3B8'
+          }}
+        >
+          <Tag size={32} />
+        </div>
 
         {/* Gender Badge (No Emojis) */}
         <div style={{ position: 'absolute', top: 6, left: 6 }}>

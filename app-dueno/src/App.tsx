@@ -39,7 +39,7 @@ export function App() {
       <header className="app-header">
         <div className="brand-title">
           <ShieldCheck size={24} color="#10B981" />
-          <span>VeciBar Bebé</span>
+          <span>VeciBar</span>
           <span style={{ fontSize: '0.65rem', background: '#10B981', color: '#064E3B', padding: '2px 8px', borderRadius: 12, fontWeight: 800 }}>
             DUEÑO
           </span>

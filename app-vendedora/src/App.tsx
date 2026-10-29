@@ -78,7 +78,7 @@ export function App() {
       <header className="app-header">
         <div className="brand-title">
           <Store size={22} color="#E05D82" />
-          <span>VeciBar Bebé</span>
+          <span>VeciBar</span>
           <span style={{ fontSize: '0.65rem', background: '#FCE7F3', color: '#DB2777', padding: '2px 8px', borderRadius: 12, fontWeight: 700, letterSpacing: '0.5px' }}>
             VENDEDORA
           </span>

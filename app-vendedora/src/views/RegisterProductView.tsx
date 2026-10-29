@@ -105,7 +105,7 @@ export const RegisterProductView: React.FC<RegisterProductViewProps> = ({
       <div style={{ background: 'linear-gradient(135deg, #FFF1F2, #FDF2F8)', padding: 14, borderRadius: 16, border: '1px solid #FFE4E6' }}>
         <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: '#9F1239', display: 'flex', alignItems: 'center', gap: 6 }}>
           <Shirt size={18} color="#9F1239" />
-          <span>Registro de Ropa de Bebé</span>
+          <span>Registro de Prendas</span>
         </h3>
         <p style={{ fontSize: '0.78rem', color: '#881337', marginTop: 2 }}>
           Ingreso de nueva mercadería con foto para Cloudflare y base de datos Turso
@@ -264,45 +264,47 @@ export const RegisterProductView: React.FC<RegisterProductViewProps> = ({
           </div>
         </div>
 
-        {/* Size Selection */}
+        {/* Size Input - Any custom size */}
         <div className="card">
           <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, marginBottom: 8, color: '#334155' }}>
-            Talla para bebé *
+            Talla de la prenda *
           </label>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 10 }}>
-            {PRESET_SIZES.map((s) => {
-              const active = size === s && !customSize;
-              return (
-                <button
-                  key={s}
-                  type="button"
-                  onClick={() => {
-                    setSize(s);
-                    setCustomSize('');
-                  }}
-                  style={{
-                    padding: '6px 10px',
-                    borderRadius: 8,
-                    border: active ? '1.5px solid #E05D82' : '1px solid #E2E8F0',
-                    background: active ? '#FDF2F4' : '#F8FAFC',
-                    color: active ? '#E05D82' : '#334155',
-                    fontSize: '0.78rem',
-                    fontWeight: 700,
-                    cursor: 'pointer'
-                  }}
-                >
-                  {s}
-                </button>
-              );
-            })}
-          </div>
           <input
             type="text"
             className="input-field"
-            placeholder="O escribe otra talla personalizada..."
-            value={customSize}
-            onChange={(e) => setCustomSize(e.target.value)}
+            placeholder="Escribe la talla (ej: S, M, L, XL, 2, 4, etc.)..."
+            value={customSize || size}
+            onChange={(e) => {
+              setCustomSize(e.target.value);
+              setSize(e.target.value);
+            }}
+            required
+            style={{ fontSize: '0.95rem', fontWeight: 600 }}
           />
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 10 }}>
+            {['S', 'M', 'L', 'XL', '2', '4', '6', '8', '0-3M', '3-6M'].map((s) => (
+              <button
+                key={s}
+                type="button"
+                onClick={() => {
+                  setSize(s);
+                  setCustomSize(s);
+                }}
+                style={{
+                  padding: '5px 10px',
+                  borderRadius: 8,
+                  border: (customSize || size) === s ? '1.5px solid #E05D82' : '1px solid #E2E8F0',
+                  background: (customSize || size) === s ? '#FDF2F4' : '#F8FAFC',
+                  color: (customSize || size) === s ? '#E05D82' : '#334155',
+                  fontSize: '0.78rem',
+                  fontWeight: 600,
+                  cursor: 'pointer'
+                }}
+              >
+                {s}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Prices: Purchase Price & Sale Price */}

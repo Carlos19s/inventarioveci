@@ -98,14 +98,32 @@ export const StockExitsView: React.FC<StockExitsViewProps> = ({
             return (
               <div key={item.productId} className="stock-exit-card">
                 {/* Product Image */}
-                <div style={{ width: 62, height: 62, borderRadius: 12, background: '#F1F5F9', overflow: 'hidden', flexShrink: 0 }}>
+                <div style={{ width: 62, height: 62, borderRadius: 12, background: '#F1F5F9', overflow: 'hidden', flexShrink: 0, position: 'relative' }}>
                   {item.imageUrl ? (
-                    <img src={item.imageUrl} alt={item.productName} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                  ) : (
-                    <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#94A3B8' }}>
-                      <Tag size={20} />
-                    </div>
-                  )}
+                    <img
+                      src={item.imageUrl.replace(/http:\/\/localhost(:\d+)?/, 'http://inventarioveci.runasp.net')}
+                      alt={item.productName}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      onError={(e) => {
+                        (e.target as HTMLElement).style.display = 'none';
+                        const fallback = (e.target as HTMLElement).parentElement?.querySelector('.img-fallback') as HTMLElement;
+                        if (fallback) fallback.style.display = 'flex';
+                      }}
+                    />
+                  ) : null}
+                  <div
+                    className="img-fallback"
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      display: item.imageUrl ? 'none' : 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: '#94A3B8'
+                    }}
+                  >
+                    <Tag size={20} />
+                  </div>
                 </div>
 
                 {/* Details (No Emojis) */}

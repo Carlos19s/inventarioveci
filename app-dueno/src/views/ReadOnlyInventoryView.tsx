@@ -3,7 +3,7 @@ import { Search, ShieldAlert, RefreshCw, AlertCircle, Tag } from 'lucide-react';
 import type { Product, Category, GenderType } from '../types';
 import { getProducts, getCategories } from '../services/api';
 
-const SIZES = ['Todas', 'RN (0-1M)', '0-3M', '3-6M', '6-9M', '9-12M', '12-18M', '18-24M', '2T', '3T', '4T'];
+const DEFAULT_SIZES = ['Todas', 'S', 'M', 'L', 'XL', '2', '4', '6', '8'];
 
 export const ReadOnlyInventoryView: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -132,7 +132,7 @@ export const ReadOnlyInventoryView: React.FC = () => {
             value={selectedSize}
             onChange={(e) => setSelectedSize(e.target.value)}
           >
-            {SIZES.map((s) => (
+            {Array.from(new Set([...DEFAULT_SIZES, ...products.map(p => p.size).filter(Boolean)])).map((s) => (
               <option key={s} value={s}>{s}</option>
             ))}
           </select>
@@ -167,14 +167,32 @@ export const ReadOnlyInventoryView: React.FC = () => {
             return (
               <div key={p.id} className="card" style={{ padding: 12, display: 'flex', gap: 12 }}>
                 {/* Photo */}
-                <div style={{ width: 75, height: 75, borderRadius: 12, background: '#F1F5F9', overflow: 'hidden', flexShrink: 0 }}>
+                <div style={{ width: 75, height: 75, borderRadius: 12, background: '#F1F5F9', overflow: 'hidden', flexShrink: 0, position: 'relative' }}>
                   {p.imageUrl ? (
-                    <img src={p.imageUrl} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                  ) : (
-                    <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#94A3B8' }}>
-                      <Tag size={24} />
-                    </div>
-                  )}
+                    <img
+                      src={p.imageUrl.replace(/http:\/\/localhost(:\d+)?/, 'http://inventarioveci.runasp.net')}
+                      alt={p.name}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      onError={(e) => {
+                        (e.target as HTMLElement).style.display = 'none';
+                        const fallback = (e.target as HTMLElement).parentElement?.querySelector('.img-fallback') as HTMLElement;
+                        if (fallback) fallback.style.display = 'flex';
+                      }}
+                    />
+                  ) : null}
+                  <div
+                    className="img-fallback"
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      display: p.imageUrl ? 'none' : 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: '#94A3B8'
+                    }}
+                  >
+                    <Tag size={24} />
+                  </div>
                 </div>
 
                 {/* Info (No Emojis) */}
